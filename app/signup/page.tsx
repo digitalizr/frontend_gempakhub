@@ -94,7 +94,7 @@ export default function SignUpPage() {
     try {
       // Direct API call to Gempakhub API
       const jellyfinApiKey = "2334d422878c44d293bbb6254e337538" // This should ideally be stored securely
-      const jellyfinApiUrl = "http://gempakhub.com/Users/New"
+      const jellyfinApiUrl = "https://gempakhub.com/Users/New"
 
       const response = await fetch(jellyfinApiUrl, {
         method: "POST",
@@ -294,7 +294,7 @@ export default function SignUpPage() {
           <div className="mt-6 text-center">
             <p className="text-white/60">
               Already have an account?{" "}
-              <a href="http://gempakhub.com/web/#/login.html" className="text-gempak-yellow hover:underline">
+              <a href="https://gempakhub.com/web/#/login.html" className="text-gempak-yellow hover:underline">
                 Sign In
               </a>
             </p>
