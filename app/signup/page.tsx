@@ -11,6 +11,7 @@ import Image from "next/image"
 export default function SignUpPage() {
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -25,7 +26,9 @@ export default function SignUpPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+    form: "",
   })
+  const [success, setSuccess] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -85,27 +88,64 @@ export default function SignUpPage() {
 
     if (!validateForm()) return
 
+    setIsLoading(true)
+    setErrors((prev) => ({ ...prev, form: "" }))
+
     try {
-      // Here you would call your API endpoint
-      // const response = await fetch('/api/signup', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     username: formData.username,
-      //     email: formData.email,
-      //     phone: `${formData.countryCode}${formData.phoneNumber}`,
-      //     password: formData.password
-      //   })
-      // })
+      // Direct API call to Gempakhub API
+      const jellyfinApiKey = "2334d422878c44d293bbb6254e337538" // This should ideally be stored securely
+      const jellyfinApiUrl = "http://gempakhub.com/Users/New"
 
-      // if (response.ok) {
-      //   router.push('/signin')
-      // }
+      const response = await fetch(jellyfinApiUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `MediaBrowser Token=${jellyfinApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Name: formData.username,
+          Password: formData.password,
+          HasPassword: true,
+          Policy: {
+            IsAdministrator: false,
+            EnableRemoteAccess: true,
+            AuthenticationProviderId: "default",
+            PasswordResetProviderId: "default",
+          },
+          Configuration: {
+            EnableAutoLogin: false,
+          },
+        }),
+      })
 
-      // For now, just redirect to sign in page
-      router.push("/signin")
+      if (response.ok) {
+        // User created successfully
+        const data = await response.json()
+        console.log("User created successfully:", data)
+
+        // Show success message
+        setSuccess(true)
+
+        // Redirect to external sign in page after 3 seconds
+        setTimeout(() => {
+          window.location.href = "http://gempakhub.com/web/#/login.html"
+        }, 3000)
+      } else {
+        // Handle API error
+        const errorData = await response.json()
+        setErrors((prev) => ({
+          ...prev,
+          form: errorData.message || "Error creating user. Please try again.",
+        }))
+      }
     } catch (error) {
       console.error("Signup failed:", error)
+      setErrors((prev) => ({
+        ...prev,
+        form: "Network error. Please check your connection and try again.",
+      }))
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -131,6 +171,8 @@ export default function SignUpPage() {
             <h1 className="text-2xl font-bold text-white">Create Your Account</h1>
             <p className="text-white/60 mt-2">Join GempakHub and start streaming Tamil content</p>
           </div>
+
+          {errors.form && <div className="bg-red-500/15 text-red-500 px-4 py-3 rounded-md mb-6">{errors.form}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
@@ -236,18 +278,25 @@ export default function SignUpPage() {
 
             <button
               type="submit"
-              className="w-full px-4 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md"
+              className="w-full px-4 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md flex justify-center items-center"
+              disabled={isLoading}
             >
-              Sign Up
+              {isLoading ? "Creating Account..." : "Sign Up"}
             </button>
           </form>
+          {success && (
+            <div className="mt-6 bg-green-500/15 text-green-500 px-4 py-3 rounded-md text-center">
+              <p className="font-medium">Account created successfully!</p>
+              <p className="text-sm mt-1">Redirecting you to the login page...</p>
+            </div>
+          )}
 
           <div className="mt-6 text-center">
             <p className="text-white/60">
               Already have an account?{" "}
-              <Link href="/signin" className="text-gempak-yellow hover:underline">
+              <a href="http://gempakhub.com/web/#/login.html" className="text-gempak-yellow hover:underline">
                 Sign In
-              </Link>
+              </a>
             </p>
           </div>
 

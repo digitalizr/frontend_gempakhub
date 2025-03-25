@@ -1,12 +1,26 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
-import { ChevronRight, Play, Users, Calendar, CheckCircle } from "lucide-react"
+import { ChevronRight, Play, Users, Calendar, CheckCircle, Menu, X } from "lucide-react"
 import Image from "next/image"
 
 export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Handle smooth scrolling for navigation links
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+    setMobileMenuOpen(false)
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-blue text-white">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-gempak-darkBlue/90 backdrop-blur-sm">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="container-symmetric flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
             <Image
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Kopie%20von%20Gempak%20Logo%20Round-KX5OB11NFBLnN9fZA9PkvM4SmFodGu.png"
@@ -20,36 +34,87 @@ export default function LandingPage() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link
-              href="#features"
+            <button
+              onClick={() => scrollToSection("features")}
               className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors"
             >
               Features
-            </Link>
-            <Link href="#pricing" className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors">
+            </button>
+            <button
+              onClick={() => scrollToSection("pricing")}
+              className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors"
+            >
               Pricing
-            </Link>
-            <Link href="#content" className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors">
+            </button>
+            <button
+              onClick={() => scrollToSection("content")}
+              className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors"
+            >
               Content
-            </Link>
-            <Link href="#faq" className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors">
+            </button>
+            <button
+              onClick={() => scrollToSection("faq")}
+              className="text-sm font-medium text-white hover:text-gempak-yellow transition-colors"
+            >
               FAQ
-            </Link>
+            </button>
           </nav>
 
           <div className="flex items-center gap-4">
-            <Link href="/signin" className="hidden sm:block">
+            <a href="http://gempakhub.com/web/#/login.html" className="hidden sm:block">
               <button className="px-4 py-2 text-sm font-medium text-white hover:text-gempak-yellow transition-colors">
                 Sign In
               </button>
-            </Link>
+            </a>
             <Link href="/signup">
               <button className="px-4 py-2 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md">
                 Start Free Trial
               </button>
             </Link>
+
+            {/* Mobile menu button */}
+            <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-gempak-navy border-b border-white/10">
+            <div className="container-symmetric py-4 space-y-3">
+              <button
+                onClick={() => scrollToSection("features")}
+                className="block w-full text-left px-4 py-2 text-white hover:bg-white/10 rounded-md"
+              >
+                Features
+              </button>
+              <button
+                onClick={() => scrollToSection("pricing")}
+                className="block w-full text-left px-4 py-2 text-white hover:bg-white/10 rounded-md"
+              >
+                Pricing
+              </button>
+              <button
+                onClick={() => scrollToSection("content")}
+                className="block w-full text-left px-4 py-2 text-white hover:bg-white/10 rounded-md"
+              >
+                Content
+              </button>
+              <button
+                onClick={() => scrollToSection("faq")}
+                className="block w-full text-left px-4 py-2 text-white hover:bg-white/10 rounded-md"
+              >
+                FAQ
+              </button>
+              <a href="http://gempakhub.com/web/#/login.html" className="block sm:hidden">
+                <button className="block w-full text-left px-4 py-2 text-white hover:bg-white/10 rounded-md">
+                  Sign In
+                </button>
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
       <main className="flex-1">
@@ -65,7 +130,7 @@ export default function LandingPage() {
               priority
             />
           </div>
-          <div className="container mx-auto relative z-20 py-20 md:py-32 lg:py-40 flex items-center min-h-[calc(100vh-4rem)]">
+          <div className="container-symmetric relative z-20 py-20 md:py-32 lg:py-40 flex items-center min-h-[calc(100vh-4rem)]">
             <div className="max-w-2xl mx-auto text-center md:text-left md:mx-0 space-y-6">
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-white">
                 First Ever Tamil Social OTT in the World
@@ -75,7 +140,7 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Link href="/signup">
-                  <button className="px-6 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md w-full sm:w-auto">
+                  <button className="btn-primary w-full sm:w-auto">
                     Start Free Trial <ChevronRight className="inline-block ml-2 h-4 w-4" />
                   </button>
                 </Link>
@@ -86,8 +151,8 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-16 md:py-24 bg-gempak-navy">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="features" className="section-padding bg-gempak-navy">
+          <div className="container-symmetric">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-white">Why Choose GempakHub?</h2>
               <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
@@ -125,8 +190,8 @@ export default function LandingPage() {
         </section>
 
         {/* Content Showcase */}
-        <section id="content" className="py-16 md:py-24 bg-gradient-blue">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="content" className="section-padding bg-gradient-blue">
+          <div className="container-symmetric">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-white">Featured Content</h2>
               <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
@@ -154,7 +219,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-12 text-center">
               <Link href="/signup">
-                <button className="px-6 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md">
+                <button className="btn-primary">
                   Unlock All Content <ChevronRight className="inline-block ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -163,8 +228,8 @@ export default function LandingPage() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="py-16 md:py-24 bg-gempak-navy">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="pricing" className="section-padding bg-gempak-navy">
+          <div className="container-symmetric">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-white">Simple, Affordable Pricing</h2>
               <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">
@@ -197,9 +262,7 @@ export default function LandingPage() {
                 </ul>
                 <div className="mt-8">
                   <Link href="/signup" className="block">
-                    <button className="w-full px-4 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md">
-                      Start Free Trial
-                    </button>
+                    <button className="w-full btn-primary">Start Free Trial</button>
                   </Link>
                 </div>
               </div>
@@ -228,9 +291,7 @@ export default function LandingPage() {
                 </ul>
                 <div className="mt-8">
                   <Link href="/signup" className="block">
-                    <button className="w-full px-4 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md">
-                      Start Free Trial
-                    </button>
+                    <button className="w-full btn-primary">Start Free Trial</button>
                   </Link>
                 </div>
               </div>
@@ -259,9 +320,7 @@ export default function LandingPage() {
                 </ul>
                 <div className="mt-8">
                   <Link href="/signup" className="block">
-                    <button className="w-full px-4 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md">
-                      Start Free Trial
-                    </button>
+                    <button className="w-full btn-primary">Start Free Trial</button>
                   </Link>
                 </div>
               </div>
@@ -270,8 +329,8 @@ export default function LandingPage() {
         </section>
 
         {/* FAQ Section */}
-        <section id="faq" className="py-16 md:py-24 bg-gradient-blue">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="faq" className="section-padding bg-gradient-blue">
+          <div className="container-symmetric">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold tracking-tight text-white">Frequently Asked Questions</h2>
               <p className="mt-4 text-lg text-white/70 max-w-2xl mx-auto">Got questions? We've got answers</p>
@@ -309,15 +368,13 @@ export default function LandingPage() {
 
         {/* CTA Section */}
         <section className="py-16 md:py-24 bg-gempak-darkBlue border-t border-white/10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="container-symmetric text-center">
             <h2 className="text-3xl font-bold tracking-tight mb-6 text-white">Ready to Experience GempakHub?</h2>
             <p className="text-xl mb-10 max-w-2xl mx-auto text-white/70">
               Join thousands of Tamil movie lovers and start your free trial today.
             </p>
             <Link href="/signup">
-              <button className="px-6 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors shadow-md">
-                Start Your Free Trial
-              </button>
+              <button className="btn-primary">Start Your Free Trial</button>
             </Link>
             <p className="mt-6 text-sm text-white/70">No credit card required. Cancel anytime.</p>
           </div>
@@ -325,7 +382,7 @@ export default function LandingPage() {
       </main>
 
       <footer className="bg-gempak-deepBlue py-16 text-white border-t border-white/10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container-symmetric">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="md:col-span-1">
               <div className="flex items-center gap-3 mb-6">
