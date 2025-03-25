@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gempak-yellow: #ffcc33;
+  --gempak-gold: #f5d76e;
+  --gempak-dark-blue: #001233;
+  --gempak-navy: #00224d;
+  --gempak-deep-blue: #000c1f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--gempak-dark-blue);
+  color: white;
+}
+
+.bg-gradient-blue {
+  background: linear-gradient(135deg, var(--gempak-dark-blue), var(--gempak-deep-blue));
+}
+
+.input-gempak {
+  @apply w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-gempak-yellow focus:border-transparent;
+}
+
+.btn-primary {
+  @apply px-6 py-3 rounded-md bg-gempak-yellow text-gempak-darkBlue font-medium hover:bg-gempak-gold transition-colors duration-200 shadow-md;
+}
+
+.btn-secondary {
+  @apply px-6 py-3 rounded-md bg-white/10 text-white font-medium border border-white/20 hover:bg-white/20 transition-colors duration-200;
+}
+
+.container-symmetric {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+@media (max-width: 640px) {
+  .section-padding {
+    @apply py-12;
+  }
+}
+
