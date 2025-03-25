@@ -128,7 +128,7 @@ export default function SignUpPage() {
 
         // Redirect to external sign in page after 3 seconds
         setTimeout(() => {
-          window.location.href = "http://gempakhub.com/web/#/login.html"
+          window.location.href = "https://gempakhub.com/web/#/login.html"
         }, 3000)
       } else {
         // Handle API error
