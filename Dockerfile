@@ -31,7 +31,7 @@ COPY --from=builder /app/public ./public
 RUN npm install --legacy-peer-deps && npm cache clean --force
 
 # Expose the port the app runs on
-EXPOSE 3004
+EXPOSE 3000
 
 # Start the application
 CMD ["npm", "run", "start"]
